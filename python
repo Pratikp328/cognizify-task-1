@@ -1,0 +1,30 @@
+import re
+
+def check_password_strength(password):
+    """Evaluate the strength of a password based on multiple criteria."""
+    strength = 0
+    criteria = [
+        (r"[a-z]", "Lowercase letter"),
+        (r"[A-Z]", "Uppercase letter"),
+        (r"\d", "Digit"),
+        (r"[@$!%*?&]", "Special character"),
+        (r".{8,}", "Minimum length of 8 characters")
+    ]
+    
+    missing_criteria = []
+    for pattern, desc in criteria:
+        if re.search(pattern, password):
+            strength += 1
+        else:
+            missing_criteria.append(desc)
+    
+    if strength == 5:
+        return "Strong password ✅"
+    elif strength >= 3:
+        return f"Moderate password ⚠️ (Missing: {', '.join(missing_criteria)})"
+    else:
+        return f"Weak password ❌ (Missing: {', '.join(missing_criteria)})"
+
+if __name__ == "__main__":
+    password = input("Enter your password: ")
+    print(check_password_strength(password))
